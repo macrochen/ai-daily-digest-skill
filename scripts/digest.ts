@@ -1070,7 +1070,7 @@ Options:
   --hours <n>     Time range in hours (default: 48)
   --top-n <n>     Number of top articles to include (default: 15)
   --lang <lang>   Summary language: zh or en (default: zh)
-  --output <path> Output file path (default: ./digest-YYYYMMDD.md)
+  --output <path> Output file path (default: ./outputs/ai-daily-digest-skill/YYYYMMDD-digest/digest-YYYYMMDD.md)
   --help          Show this help
 
 Environment:
@@ -1081,7 +1081,7 @@ Environment:
 
 Examples:
   bun scripts/digest.ts --hours 24 --top-n 10 --lang zh
-  bun scripts/digest.ts --hours 72 --top-n 20 --lang en --output ./my-digest.md
+  bun scripts/digest.ts --hours 72 --top-n 20 --lang en --output ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/my-digest.md
 `);
   process.exit(0);
 }

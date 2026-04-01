@@ -27,6 +27,14 @@ Agent 会依次询问：
 
 配置会自动保存到 `~/.hn-daily-digest/config.json`，下次运行可一键复用。
 
+默认情况下，建议把日报结果输出到当前工作目录下的：
+
+```text
+outputs/ai-daily-digest-skill/<yyyymmdd-digest>/
+```
+
+如果你传了 `--output <path>`，则以你指定的路径为准。
+
 ### 直接命令行运行
 
 ```bash
@@ -34,7 +42,7 @@ export GEMINI_API_KEY="your-key"
 export OPENAI_API_KEY="your-openai-compatible-key"  # 可选，Gemini 失败时兜底
 export OPENAI_API_BASE="https://api.deepseek.com/v1" # 可选，默认 https://api.openai.com/v1
 export OPENAI_MODEL="deepseek-chat"                  # 可选，不填会自动推断
-npx -y bun scripts/digest.ts --hours 48 --top-n 15 --lang zh --output ./digest.md
+npx -y bun scripts/digest.ts --hours 48 --top-n 15 --lang zh --output ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest.md
 ```
 
 ## 功能

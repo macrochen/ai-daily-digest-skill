@@ -52,6 +52,25 @@ Agent 在执行前**必须检查**此文件是否存在：
 }
 ```
 
+## 输出目录
+
+默认情况下，运行产物写到当前工作目录下的：
+
+```text
+outputs/ai-daily-digest-skill/<yyyymmdd-digest>/
+```
+
+常见文件包括：
+
+- `digest-raw.json`
+- `digest-YYYYMMDD.html`
+- `digest-YYYYMMDD.md`
+
+说明：
+
+- `~/.hn-daily-digest/config.json` 只保存用户配置，不保存本次运行结果
+- 如果显式传入 `--output <path>`，则以用户指定路径为准
+
 ---
 
 ## 交互流程
@@ -158,23 +177,23 @@ question({
 
 **第一步：抓取数据**
 ```bash
-mkdir -p ./output
+mkdir -p ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest
 npx -y bun ${SKILL_DIR}/scripts/digest.ts \
   --hours <timeRange> \
   --top-n <topN> \
   --lang <zh|en> \
   --json \
-  --output ./output/digest-raw.json
+  --output ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest-raw.json
 ```
 
 **第二步：Agent 深度分析**
 Agent **必须**执行以下操作：
-1. 读取 `./output/digest-raw.json`。
+1. 读取 `./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest-raw.json`。
 2. 采用**混合展示策略**生成 HTML 报告：
     *   **Top 10 精选 (Deep Dive)**：对前 10 篇文章进行深度解读（格式见下文）。
     *   **其余所有文章 (Quick List)**：以紧凑列表形式展示，确保用户能看到所有抓取的文章（仅需展示：中文标题、一句话简介、来源、时间）。
-3. 生成 HTML 文件 `./output/digest-$(date +%Y%m%d).html`。
-4. 打开生成的 HTML 文件：`open ./output/digest-$(date +%Y%m%d).html`。
+3. 生成 HTML 文件 `./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest-$(date +%Y%m%d).html`。
+4. 打开生成的 HTML 文件：`open ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest-$(date +%Y%m%d).html`。
 
 **深度解读格式要求（仅 Top 10）：**
 - **核心内容**：文章主题是什么？
@@ -191,13 +210,13 @@ Agent **必须**执行以下操作：
 无需 API Key，直接生成 HTML。
 
 ```bash
-mkdir -p ./output
+mkdir -p ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest
 npx -y bun ${SKILL_DIR}/scripts/digest.ts \
   --hours <timeRange> \
   --top-n <topN> \
   --lang <zh|en> \
   --lite \
-  --output ./output/digest-$(date +%Y%m%d).html
+  --output ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest-$(date +%Y%m%d).html
 ```
 
 #### 3. AI 智能摘要 (Legacy)
@@ -205,13 +224,13 @@ npx -y bun ${SKILL_DIR}/scripts/digest.ts \
 需要 API Key。
 
 ```bash
-mkdir -p ./output
+mkdir -p ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest
 export GEMINI_API_KEY="<key>"
 npx -y bun ${SKILL_DIR}/scripts/digest.ts \
   --hours <timeRange> \
   --top-n <topN> \
   --lang <zh|en> \
-  --output ./output/digest-$(date +%Y%m%d).md
+  --output ./outputs/ai-daily-digest-skill/$(date +%Y%m%d)-digest/digest-$(date +%Y%m%d).md
 ```
 
 ### Step 2b: 保存配置
